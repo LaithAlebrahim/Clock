@@ -31,26 +31,6 @@ function Clock () {
   // }
   const [time, setTime] = useState<ClockProps> ({ hour: 0, minute: 0, second: 0 });
 
-  useEffect(() => {
-   (
-      fetch('http://worldtimeapi.org/api/timezone/europe/berlin')
-      .then(res => res.json())
-      .then(data => 
-      
-        {
-      
-          const datetime = data.datetime 
-          const time = datetime.slice(11,19) 
-          const hour = time.slice(0,2) 
-          const minute = time.slice(3,5) 
-          const second = time.slice(6,8) 
-         
-          setTime({ hour: parseInt(hour), minute: parseInt(minute), second: parseInt(second) })
-  
-        }
-      )
-    ) 
-  }, [])
 
 
   setInterval(() => {
@@ -69,9 +49,10 @@ function Clock () {
         setTime({ hour: parseInt(hour), minute: parseInt(minute), second: parseInt(second) })
 
       }
-    )
-  } ,1000);
-
+    ).catch(e => {
+      console.log(e);
+  });
+  } ,1000)
 
 
 
