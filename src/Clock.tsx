@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import styles from './style.module.css';
+import styles from "./style.module.css";
 interface ClockProps {
   hour: number;
   minute: number;
   second: number;
-  
 }
 
-
-function Clock () {
- 
+function Clock() {
   // # curl "http://worldtimeapi.org/api/timezone/Europe/London"
   // {
   //   "abbreviation": "BST",
@@ -29,52 +26,50 @@ function Clock () {
   //   "utc_offset": "+01:00",
   //   "week_number": 32
   // }
-  const [time, setTime] = useState<ClockProps> ({ hour: 0, minute: 0, second: 0 });
-
-
+  const [time, setTime] = useState<ClockProps>({
+    hour: 0,
+    minute: 0,
+    second: 0
+  });
 
   setInterval(() => {
-    fetch('http://worldtimeapi.org/api/timezone/europe/berlin')
-    .then(res => res.json())
-    .then(data => 
-    
-      {
-    
-        const datetime = data.datetime 
-        const time = datetime.slice(11,19) 
-        const hour = time.slice(0,2) 
-        const minute = time.slice(3,5) 
-        const second = time.slice(6,8) 
-       
-        setTime({ hour: parseInt(hour), minute: parseInt(minute), second: parseInt(second) })
+    fetch("https://worldtimeapi.org/api/timezone/Europe/Moscow")
+      .then((res) => res.json())
+      .then((data) => {
+        const datetime = data.datetime;
+        const time = datetime.slice(11, 19);
+        const hour = time.slice(0, 2);
+        const minute = time.slice(3, 5);
+        const second = time.slice(6, 8);
 
-      }
-    ).catch(e => {
-      console.log(e);
-  });
-  } ,1000)
+        setTime({
+          hour: parseInt(hour),
+          minute: parseInt(minute),
+          second: parseInt(second)
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, 1000);
 
+  return (
+    <>
+      <div className={styles.clock}>
+        <div
+          className={styles.hour_hand}
+          style={{ transform: `rotateZ(${time.hour * 30}deg)` }}
+        ></div>
+        <div
+          className={styles.min_hand}
+          style={{ transform: `rotateZ(${time.minute * 6}deg)` }}
+        ></div>
+        <div
+          className={styles.sec_hand}
+          style={{ transform: `rotateZ(${time.second * 6}deg)` }}
+        ></div>
 
-
-
-       
-    return (
-      <>
-        <div className={styles.clock}>
-             <div className={styles.hour_hand}
-             style={{transform : `rotateZ(${ time.hour *30}deg)`}}>
-
-             </div>
-             <div className={styles.min_hand}
-             style={{transform : `rotateZ(${time.minute *6}deg)`}}>
-
-             </div>
-             <div className={styles.sec_hand}
-             style={{transform : `rotateZ(${time.second *6}deg)`}}>
-
-             </div>
-
-             <span className={styles.twelve}>12</span>
+        <span className={styles.twelve}>12</span>
         <span className={styles.one}>1</span>
         <span className={styles.two}>2</span>
         <span className={styles.three}>3</span>
@@ -86,11 +81,9 @@ function Clock () {
         <span className={styles.nine}>9</span>
         <span className={styles.ten}>10</span>
         <span className={styles.eleven}>11</span>
-         </div>
+      </div>
+    </>
+  );
+}
 
-      </>
-    );
-  }
-
-
-export default Clock
+export default Clock;
